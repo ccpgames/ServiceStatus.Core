@@ -7,7 +7,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStatus.Core", "Servi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStatus.Core.Sql", "ServiceStatus.Core.Sql\ServiceStatus.Core.Sql.csproj", "{02DF8FB7-2497-4022-B3C3-ED6E9BF87E6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStatus.Core.DependencyInjection", "ServiceStatus.Core.DependencyInjection\ServiceStatus.Core.DependencyInjection.csproj", "{5E7F10BC-A062-4C54-AEA7-747E1C36CC24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStatus.Core.DependencyInjection", "ServiceStatus.Core.DependencyInjection\ServiceStatus.Core.DependencyInjection.csproj", "{5E7F10BC-A062-4C54-AEA7-747E1C36CC24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BD89FC1-C6AA-43C7-BEB7-EB03F813419D}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
