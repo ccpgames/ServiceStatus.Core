@@ -16,7 +16,9 @@ public void ConfigureServices(IServiceCollection services)
 ```
 
 Once completed you need to add some StatusCheck classes, depending on what you want to look up. Lets go with a web service that is a dependency for your service. 
+
 Assuming this service does not have an identical service status / ServiceStatus.Core implemented, we will create a simple abstraction for checks to see if a web service responds with HttpStatusCode 200 OK.
+
 If your service is running ServiceStatus.Core, you may use `ResponsibilityServiceStatusCheck` instead.
 
 ```cs
