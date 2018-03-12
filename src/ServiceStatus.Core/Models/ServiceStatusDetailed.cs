@@ -35,6 +35,11 @@ namespace ServiceStatus.Core.Models
             }
         }
 
+        /// <summary>
+        /// Initialize a new instance of the class
+        /// </summary>
+        /// <param name="checks"></param>
+        /// <param name="responsibilityFilter">Filter checks by responsibility</param>
         public ServiceStatusDetailed(Dictionary<IServiceStatusCheck, StatusCheckDetail> checks, string responsibilityFilter = null)
         {
             // We have received a filtering request, empty the responsibilities
@@ -87,5 +92,32 @@ namespace ServiceStatus.Core.Models
                 }
             }
         }
+
+        /// <summary>
+        /// Validates the over all final status, in regards to any responsibilities and checks
+        /// </summary>
+        /// <param name="requiredResponsibilities">A list of responsibilities that will result in final status of ERROR if any are not returning OK</param>
+        public void ValidateStatus(string[] requiredResponsibilities)
+        {
+            if (requiredResponsibilities != null)
+            {
+                Status = Responsibilities.Any(x => requiredResponsibilities.Any(y => x.Key == y) && x.Value != StatusTypes.OK) ? StatusTypes.Error : Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK;
+            }
+            else
+            {
+                Status = Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK;
+            }
+        }
+
+        /// <summary>
+        /// Validates the over all final status, in regards to any responsibilities and checks
+        /// </summary>
+        /// <param name="requiredResponsibility">Responsibility that will result in final status of ERROR if it is not returning OK</param>
+        public void ValidateStatus(string requiredResponsibility) => ValidateStatus(new[] { requiredResponsibility });
+
+        /// <summary>
+        /// Validates the over all final status in regards to checks
+        /// </summary>
+        public void ValidateStatus() => ValidateStatus(requiredResponsibilities: null);
     }
 }
