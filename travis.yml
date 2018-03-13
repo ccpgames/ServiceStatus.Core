@@ -1,0 +1,15 @@
+language: csharp
+mono: none
+dotnet: 2.1.4
+before_install:
+  - export PROJECT_LOCATION=./src/EVEOnline.Articles.Feed/
+install:
+  - dotnet restore $PROJECT_LOCATION -v minimal
+script:
+- dotnet build $PROJECT_LOCATION -v minimal 
+# - dotnet test $TESTS_LOCATION -v minimal
+deploy:
+  provider: script
+  script: /bin/sh ./scripts/CreateNuGet.sh -v $TRAVIS_TAG && /bin/sh ./scripts/DeployNuGet.sh $NUGET_API_KEY $NUGET_SOURCE
+  on:
+    tags: true
