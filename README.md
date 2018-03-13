@@ -39,9 +39,11 @@ public abstract class IsSuccessStatusCodeServiceStatusCheck : WebContentServiceS
     {
         if (response.IsSuccessStatusCode)
         {
+			// We successfully contacted the service
             return true;
         }
 
+		// Service could not be reached
         return false;
     }
 }
@@ -73,12 +75,17 @@ public class LoginServiceServiceCheck : IsSuccessStatusCodeServiceStatusCheck
         return builder.Uri;
     }
 
+	// Responsibilities this check belongs to
     public override Dictionary<string, ServiceStatusRequirement> Responsibilities => _responsibilities;
 
+	// Name of the check
     public override string Name => "LoginService";
 
+	// Cache duration is not used in this example
+	// but could be added to the evaluation
     public override TimeSpan? CacheDuration => _cacheDuration;
 
+	// Is the check enabled
     public override bool IsEnabled() => true;
 }
 ```
