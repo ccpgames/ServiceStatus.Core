@@ -39,12 +39,12 @@ public abstract class IsSuccessStatusCodeServiceStatusCheck : WebContentServiceS
     {
         if (response.IsSuccessStatusCode)
         {
-			// We successfully contacted the service
-			return true;
+            // We successfully contacted the service
+            return true;
         }
 
-		// Service could not be reached
-		return false;
+        // Service could not be reached
+        return false;
     }
 }
 ```
