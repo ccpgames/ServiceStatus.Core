@@ -9,13 +9,13 @@ Getting started with ServiceStatus.Core is kept simple by using the DependencyIn
 ```cs
 public void ConfigureServices(IServiceCollection services)
 {
-	...
+    ...
 
-	// Enable ServiceStatus.Core, the assembly referenced should be the one
-	// where StatusChecks are implemented. Alternately use typeof(T).Assembly
-	services.UseServiceStatus(GetType().Assembly);
+    // Enable ServiceStatus.Core, the assembly referenced should be the one
+    // where StatusChecks are implemented. Alternately use typeof(T).Assembly
+    services.UseServiceStatus(GetType().Assembly);
 
-	...
+    ...
 }
 ```
 
@@ -62,8 +62,8 @@ public class LoginServiceServiceCheck : IsSuccessStatusCodeServiceStatusCheck
     private static readonly TimeSpan _cacheDuration = null;
     private static readonly string[] _responsibilitiesToCheck = new[] { ResponsibilityTypes.Core };
 
-	// We retrieve the service Uri from IOptions
-	// LoginServiceSettings.ServiceUri in this case
+    // We retrieve the service Uri from IOptions
+    // LoginServiceSettings.ServiceUri in this case
     public LoginServiceServiceCheck(ILogger logger, HttpClient httpClient, IOptions<LoginServiceSettings> settings) : base(logger, httpClient, ServiceStatusUri(settings.Value.ServiceUri), _responsibilitiesToCheck)
     {
     }
@@ -75,18 +75,18 @@ public class LoginServiceServiceCheck : IsSuccessStatusCodeServiceStatusCheck
         return builder.Uri;
     }
 
-	// Responsibilities this check belongs to
+    // Responsibilities this check belongs to
     public override Dictionary<string, ServiceStatusRequirement> Responsibilities => _responsibilities;
 
-	// Name of the check
+    // Name of the check
     public override string Name => "LoginService";
 
-	// Cache duration is not used in this example
-	// but could be added to the evaluation
+    // Cache duration is not used in this example
+    // but could be added to the evaluation
     public override TimeSpan? CacheDuration => _cacheDuration;
 
-	// Is the check enabled
-	public override bool IsEnabled() => true;
+    // Is the check enabled
+    public override bool IsEnabled() => true;
 }
 ```
 
