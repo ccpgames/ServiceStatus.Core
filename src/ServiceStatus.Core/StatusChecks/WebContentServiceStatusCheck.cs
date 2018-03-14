@@ -18,9 +18,9 @@ namespace ServiceStatus.Core
         protected readonly Uri _uri;
         protected readonly HttpMethod _httpMethod;
 
-        public WebContentServiceStatusCheck(ILogger logger, HttpClient httpClient, Uri uri) : this(logger, httpClient, uri, HttpMethod.Get) { }
+        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, HttpClient httpClient, Uri uri) : this(logger, httpClient, uri, HttpMethod.Get) { }
 
-        public WebContentServiceStatusCheck(ILogger logger, HttpClient httpClient, Uri uri, HttpMethod httpMethod) : base (logger) 
+        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, HttpClient httpClient, Uri uri, HttpMethod httpMethod) : base (logger) 
         {
             _httpClient = httpClient ?? new HttpClient();
             _uri = uri;

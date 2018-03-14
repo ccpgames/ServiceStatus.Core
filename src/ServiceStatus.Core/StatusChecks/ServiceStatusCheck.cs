@@ -24,7 +24,7 @@ namespace ServiceStatus.Core
         public abstract string Name { get; }
         public abstract TimeSpan? CacheDuration { get; }
 
-        protected ServiceStatusCheck(ILogger logger)
+        protected ServiceStatusCheck(ILogger<ServiceStatusCheck> logger)
         {
             _logger = logger;
         }

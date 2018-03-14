@@ -10,7 +10,7 @@ namespace ServiceStatus.Core.Sql
 {
     public abstract class SqlServerStatusCheck : ServiceStatusCheck
     {
-        protected SqlServerStatusCheck(ILogger logger) : base(logger) { }
+        protected SqlServerStatusCheck(ILogger<SqlServerStatusCheck> logger) : base(logger) { }
 
         /// <summary>
         /// 

@@ -14,7 +14,7 @@ namespace ServiceStatus.Core
     {
         private readonly string[] _responsibilities;
 
-        public ResponsibilityServiceStatusCheck(ILogger logger, HttpClient httpClient, Uri uri, string[] responsibilities) : base(logger, httpClient, uri)
+        public ResponsibilityServiceStatusCheck(ILogger<ResponsibilityServiceStatusCheck> logger, HttpClient httpClient, Uri uri, string[] responsibilities) : base(logger, httpClient, uri)
         {
             _responsibilities = responsibilities;
         }

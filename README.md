@@ -28,7 +28,7 @@ If your service is running ServiceStatus.Core, you may use `ResponsibilityServic
 ```cs
 public abstract class IsSuccessStatusCodeServiceStatusCheck : WebContentServiceStatusCheck
 {
-    public IsSuccessStatusCodeServiceStatusCheck(ILogger logger, HttpClient httpClient, Uri uri) : base(logger, httpClient, uri) { }
+    public IsSuccessStatusCodeServiceStatusCheck(ILogger<IsSuccessStatusCodeServiceStatusCheck> logger, HttpClient httpClient, Uri uri) : base(logger, httpClient, uri) { }
 
     /// <summary>
     /// Evaluate the response from a HTTP service
@@ -64,7 +64,7 @@ public class LoginServiceServiceCheck : IsSuccessStatusCodeServiceStatusCheck
 
     // We retrieve the service Uri from IOptions
     // LoginServiceSettings.ServiceUri in this case
-    public LoginServiceServiceCheck(ILogger logger, HttpClient httpClient, IOptions<LoginServiceSettings> settings) : base(logger, httpClient, ServiceStatusUri(settings.Value.ServiceUri), _responsibilitiesToCheck)
+    public LoginServiceServiceCheck(ILogger<LoginServiceServiceCheck> logger, HttpClient httpClient, IOptions<LoginServiceSettings> settings) : base(logger, httpClient, ServiceStatusUri(settings.Value.ServiceUri), _responsibilitiesToCheck)
     {
     }
 
