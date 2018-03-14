@@ -3,7 +3,7 @@ set -e
 
 # Find all the GIT changes
 # GIT_CHANGES=$(git diff --name-only HEAD HEAD~10)
-GIT_CHANGES=$(git diff --name-only $TRAVIS_COMMIT_RANGE)
+GIT_CHANGES=$(git diff --name-only $(git describe --tags $(git rev-list --tags --max-count=1)) HEAD)
 
 # Get the folder names for the changes that have occurred
 LIST_CHANGES=$(echo "$GIT_CHANGES" | grep -Po '(?i)src/\K([a-zA-Z0-9-.]+)(?=/.*)')
