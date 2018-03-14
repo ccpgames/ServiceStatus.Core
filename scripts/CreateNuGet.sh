@@ -41,6 +41,6 @@ done
 # and create a nuget package to be deployed
 echo "$LIST_UNIQUE" | while read -r dirName; do
     cd "$dirName"
-    dotnet pack -o ../../nuget -c Release //p:Version=$PROJECT_VERSION
+    dotnet pack -o ../../nuget -c Release /p:Version=$PROJECT_VERSION
     cd ..
 done
