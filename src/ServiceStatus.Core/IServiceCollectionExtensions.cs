@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using ServiceStatus.Core.Abstractions;
+﻿using ServiceStatus.Core.Abstractions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace ServiceStatus.Core.DependencyInjection
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class ServiceStatusExtensions
+    public static class IServiceCollectionExtensions
     {
         public static IServiceCollection UseServiceStatus(this IServiceCollection services, params Assembly[] assemblies)
         {

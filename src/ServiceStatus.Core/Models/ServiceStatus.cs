@@ -10,25 +10,25 @@ namespace ServiceStatus.Core.Models
         /// <summary>
         /// Gets or sets service version
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "version", NullValueHandling = NullValueHandling.Ignore)]
         public string Version { get; set; }
 
         /// <summary>
         /// Gets or sets the branch the service was built from
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "branch", NullValueHandling = NullValueHandling.Ignore)]
         public string Branch { get; set; }
 
         /// <summary>
         /// Gets or sets the server responding to the request
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "server", NullValueHandling = NullValueHandling.Ignore)]
         public string Server { get; set; }
 
         /// <summary>
         /// Gets or sets the status of the service (OK is normal)
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "status", NullValueHandling = NullValueHandling.Ignore)]
         public string Status { get; set; } = StatusTypes.Unknown;
 
         /// <summary>

@@ -1,15 +1,19 @@
-﻿namespace ServiceStatus.Core.Models
+﻿using Newtonsoft.Json;
+
+namespace ServiceStatus.Core.Models
 {
     public class StatusCheckDetail
     {
         /// <summary>
         /// Gets the value of the service check
         /// </summary>
+        [JsonProperty(PropertyName = "value")]
         public string Value { get; }
 
         /// <summary>
         /// Gets the response time of the service check in milliseconds
         /// </summary>
+        [JsonProperty(PropertyName = "responseTime")]
         public long ResponseTime { get; }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using ServiceStatus.Core.Abstractions;
+﻿using Newtonsoft.Json;
+using ServiceStatus.Core.Abstractions;
 using ServiceStatus.Core.Constants;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,13 @@ namespace ServiceStatus.Core.Models
         /// <summary>
         /// Gets the service status details
         /// </summary>
+        [JsonProperty(PropertyName = "details")]
         public List<ServiceStatusDetailedEntry> Details { get; } = new List<ServiceStatusDetailedEntry>();
 
         /// <summary>
         /// Gets the service status responsibilities
         /// </summary>
+        [JsonProperty(PropertyName = "responsibilities")]
         public Dictionary<string, string> Responsibilities { get; } = new Dictionary<string, string>() { { ResponsibilityTypes.Core, StatusTypes.OK } };
 
         public ServiceStatusDetailed() { }

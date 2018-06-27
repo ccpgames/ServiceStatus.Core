@@ -7,33 +7,37 @@ namespace ServiceStatus.Core.Models
         /// <summary>
         /// Gets or sets the name of the detailed entry
         /// </summary>
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the value of the detail entry
         /// </summary>
+        [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
 
         /// <summary>
         /// Gets or sets the response time (in milliseconds) that the operation took
         /// </summary>
+        [JsonProperty(PropertyName = "responseTime")]
         public long ResponseTime { get; set; }
 
         /// <summary>
         /// Gets or sets the response time (in milliseconds) that the operation took as a string
         /// </summary>
+        [JsonProperty(PropertyName = "time")]
         public string Time { get; set; }
 
         /// <summary>
         /// Gets or sets the required responsibilities of the detail entry
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "requiredBy", NullValueHandling = NullValueHandling.Ignore)]
         public string[] RequiredBy { get; set; }
 
         /// <summary>
         /// Gets or sets the optional responsibilities of the detail entry
         /// </summary>
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonProperty(PropertyName = "optionalBy", NullValueHandling = NullValueHandling.Ignore)]
         public string[] OptionalBy { get; set; }
 
         /// <summary>
