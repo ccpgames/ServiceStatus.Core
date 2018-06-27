@@ -14,15 +14,15 @@ namespace ServiceStatus.Core
     /// </summary>
     public abstract class WebContentServiceStatusCheck : ServiceStatusCheck
     {
-        protected readonly HttpClient _httpClient;
+        protected readonly IHttpClientFactory _httpClientFactory;
         protected readonly Uri _uri;
         protected readonly HttpMethod _httpMethod;
 
-        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, HttpClient httpClient, Uri uri) : this(logger, httpClient, uri, HttpMethod.Get) { }
+        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, IHttpClientFactory httpClientFactory, Uri uri) : this(logger, httpClientFactory, uri, HttpMethod.Get) { }
 
-        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, HttpClient httpClient, Uri uri, HttpMethod httpMethod) : base (logger) 
+        public WebContentServiceStatusCheck(ILogger<WebContentServiceStatusCheck> logger, IHttpClientFactory httpClientFactory, Uri uri, HttpMethod httpMethod) : base(logger)
         {
-            _httpClient = httpClient ?? new HttpClient();
+            _httpClientFactory = httpClientFactory;
             _uri = uri;
             _httpMethod = httpMethod ?? HttpMethod.Get;
         }
@@ -37,7 +37,7 @@ namespace ServiceStatus.Core
                 var request = new HttpRequestMessage(_httpMethod, _uri);
 
                 // Retrieve the response from the web service
-                HttpResponseMessage response = await _httpClient.SendAsync(request, new CancellationTokenSource(5000).Token).ConfigureAwait(false);
+                HttpResponseMessage response = await _httpClientFactory.CreateClient().SendAsync(request, new CancellationTokenSource(5000).Token).ConfigureAwait(false);
 
                 // Evaluate that the response is good
                 if (await EvaluateResponse(response).ConfigureAwait(false))

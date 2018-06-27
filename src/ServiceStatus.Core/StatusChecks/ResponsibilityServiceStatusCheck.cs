@@ -14,7 +14,7 @@ namespace ServiceStatus.Core
     {
         private readonly string[] _responsibilities;
 
-        public ResponsibilityServiceStatusCheck(ILogger<ResponsibilityServiceStatusCheck> logger, HttpClient httpClient, Uri uri, string[] responsibilities) : base(logger, httpClient, uri)
+        public ResponsibilityServiceStatusCheck(ILogger<ResponsibilityServiceStatusCheck> logger, IHttpClientFactory httpClientFactory, Uri uri, string[] responsibilities) : base(logger, httpClientFactory, uri)
         {
             _responsibilities = responsibilities;
         }
@@ -29,7 +29,6 @@ namespace ServiceStatus.Core
             if (response.IsSuccessStatusCode)
             {
                 string result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
                 ServiceStatusDetailed serviceStatus = JsonConvert.DeserializeObject<ServiceStatusDetailed>(result);
 
                 if (serviceStatus?.Responsibilities != null)

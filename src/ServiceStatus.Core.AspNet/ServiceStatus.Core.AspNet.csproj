@@ -1,24 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Company>CCP hf</Company>
     <Authors>CCP hf</Authors>
     <PackageProjectUrl>https://github.com/ccpgames/ServiceStatus.Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/ccpgames/ServiceStatus.Core</RepositoryUrl>
-    <PackageTags>Service Status</PackageTags>
+    <PackageTags>Service Status ASP.NET Core</PackageTags>
     <PackageLicenseUrl>https://github.com/ccpgames/ServiceStatus.Core/blob/master/LICENSE</PackageLicenseUrl>
     <Copyright>CCP hf</Copyright>
-    <Description>Standardizes and simplifies the addition of a service status endpoint on web sites, or APIs. Adds support for SQL Server.</Description>
+    <Description>Standardizes and simplifies the addition of a service status endpoint on web sites, or APIs.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.1" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceStatus.Core\ServiceStatus.Core.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
-  </ItemGroup>
-
 </Project>

@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace ServiceStatus.Core.Sql
+namespace ServiceStatus.Core
 {
     public abstract class SqlServerStatusCheck : ServiceStatusCheck
     {
@@ -70,7 +70,7 @@ namespace ServiceStatus.Core.Sql
                     {
                         int.TryParse(connectionStringBuilder?.DataSource?.Split(',')?[1], out port);
                     }
-                    
+
                     // Run TCP check to see if the server is responsive
                     StatusCheckDetail tcpCheck = await TcpConnectionCheckAsync(connectionStringBuilder?.DataSource, port, timer).ConfigureAwait(false);
 
