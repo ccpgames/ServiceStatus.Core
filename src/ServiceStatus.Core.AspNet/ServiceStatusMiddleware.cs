@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using ServiceStatus.Core.Abstractions;
@@ -22,7 +23,7 @@ namespace ServiceStatus.Core.AspNet
             _settings = settings;
         }
 
-        public async Task InvokeAsync(HttpContext context, IEnumerable<IServiceStatusCheck> serviceStatusChecks)
+        public async Task InvokeAsync(HttpContext context)
         {
             if (context.Request.Method == "GET" && context.Request.Path.HasValue &&
                 (context.Request.Path.Equals("/version", StringComparison.OrdinalIgnoreCase) ||
@@ -37,7 +38,7 @@ namespace ServiceStatus.Core.AspNet
                 context.Request.Path.Equals("/servicestatusdetailed", StringComparison.OrdinalIgnoreCase) ||
                 context.Request.Path.Equals("/servicestatusdetailed/", StringComparison.OrdinalIgnoreCase)))
             {
-                await HandleServiceStatusRequest(context, serviceStatusChecks);
+                await HandleServiceStatusRequest(context, context.RequestServices.GetServices<IServiceStatusCheck>());
                 return;
             }
 
