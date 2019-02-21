@@ -28,9 +28,6 @@ namespace ServiceStatus.Core.AspNet
             context.Response.StatusCode = 200;
             context.Response.ContentType = "text/plain";
             await context.Response.WriteAsync(_settings.Value?.Version ?? "0.0.0.0");
-
-            // Call the next delegate/middleware in the pipeline
-            await _next(context);
         }
     }
 }

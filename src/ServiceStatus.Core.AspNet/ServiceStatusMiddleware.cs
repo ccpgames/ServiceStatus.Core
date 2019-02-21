@@ -26,7 +26,6 @@ namespace ServiceStatus.Core.AspNet
         public async Task InvokeAsync(HttpContext context)
         {
             await HandleServiceStatusRequest(context, context.RequestServices.GetServices<IServiceStatusCheck>());
-            await _next(context);
         }
 
         private async Task HandleServiceStatusRequest(HttpContext context, IEnumerable<IServiceStatusCheck> serviceStatusChecks)
