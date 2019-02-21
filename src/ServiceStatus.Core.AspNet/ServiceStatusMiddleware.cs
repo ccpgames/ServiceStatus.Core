@@ -25,24 +25,7 @@ namespace ServiceStatus.Core.AspNet
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Method == "GET" && context.Request.Path.HasValue &&
-                (context.Request.Path.Equals("/version", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.Equals("/version/", StringComparison.OrdinalIgnoreCase)))
-            {
-                await HandleVersionRequest(context);
-                return;
-            }
-            else if (context.Request.Method == "GET" && context.Request.Path.HasValue &&
-                (context.Request.Path.Equals("/servicestatus", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.Equals("/servicestatus/", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.Equals("/servicestatusdetailed", StringComparison.OrdinalIgnoreCase) ||
-                context.Request.Path.Equals("/servicestatusdetailed/", StringComparison.OrdinalIgnoreCase)))
-            {
-                await HandleServiceStatusRequest(context, context.RequestServices.GetServices<IServiceStatusCheck>());
-                return;
-            }
-
-            // Call the next delegate/middleware in the pipeline
+            await HandleServiceStatusRequest(context, context.RequestServices.GetServices<IServiceStatusCheck>());
             await _next(context);
         }
 
@@ -89,13 +72,6 @@ namespace ServiceStatus.Core.AspNet
             context.Response.StatusCode = 200;
             context.Response.ContentType = "application/json";
             await context.Response.WriteAsync(JsonConvert.SerializeObject(status));
-        }
-
-        private Task HandleVersionRequest(HttpContext context)
-        {
-            context.Response.StatusCode = 200;
-            context.Response.ContentType = "text/plain";
-            return context.Response.WriteAsync(_settings.Value?.Version ?? "0.0.0.0");
         }
 
         /// <summary>
