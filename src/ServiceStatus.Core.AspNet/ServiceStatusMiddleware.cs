@@ -33,7 +33,7 @@ namespace ServiceStatus.Core.AspNet
             string responsibility = context.Request.Query["responsibility"].ToString() ?? string.Empty;
 
             // Create a queryable list of service status checks
-            IQueryable<IServiceStatusCheck> checksToMake = serviceStatusChecks.AsQueryable();
+            IQueryable<IServiceStatusCheck> checksToMake = serviceStatusChecks.AsQueryable().Where(check => check.IsEnabled());
 
             // If the responsibility string has been set
             // filter to only the responsibilities that are requested
