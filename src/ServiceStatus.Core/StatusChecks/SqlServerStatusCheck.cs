@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 using ServiceStatus.Core.Constants;
 using ServiceStatus.Core.Models;
 using System;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Threading.Tasks;
 

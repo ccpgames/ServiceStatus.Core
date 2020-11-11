@@ -42,16 +42,20 @@ namespace ServiceStatus.Core.AspNet.Hybrid
         public static IApplicationBuilder UseHybridServiceStatus(this IApplicationBuilder builder)
         {
             builder.UseServiceStatus();
-            builder.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
+            builder.UseRouting();
+            builder.UseEndpoints(endpoints =>
             {
-                ResponseWriter = async (HttpContext context, HealthReport report) =>
+                endpoints.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions()
                 {
-                    context.Response.StatusCode = report.Status == HealthStatus.Healthy ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable;
-                    context.Response.ContentType = "application/json";
-                    JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
-                    serializerSettings.Converters.Add(new StringEnumConverter());
-                    await context.Response.WriteAsync(JsonConvert.SerializeObject(report, serializerSettings));
-                }
+                    ResponseWriter = async (HttpContext context, HealthReport report) =>
+                    {
+                        context.Response.StatusCode = report.Status == HealthStatus.Healthy ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable;
+                        context.Response.ContentType = "application/json";
+                        JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+                        serializerSettings.Converters.Add(new StringEnumConverter());
+                        await context.Response.WriteAsync(JsonConvert.SerializeObject(report, serializerSettings));
+                    }
+                });
             });
 
             return builder;
