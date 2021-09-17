@@ -1,8 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.Constants;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
@@ -11,6 +7,12 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Extensions.Logging;
+
+using ServiceStatus.Core.Abstractions;
+using ServiceStatus.Core.Constants;
+using ServiceStatus.Core.Models;
+
 namespace ServiceStatus.Core
 {
     /// <summary>
@@ -18,7 +20,7 @@ namespace ServiceStatus.Core
     /// </summary>
     public abstract class ServiceStatusCheck : IServiceStatusCheck
     {
-        private static readonly Regex _ipRegex = new Regex("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", RegexOptions.Compiled);
+        private static readonly Regex s_ipRegex = new Regex("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", RegexOptions.Compiled);
         protected readonly ILogger _logger;
 
         public abstract Dictionary<string, ServiceStatusRequirement> Responsibilities { get; }
@@ -40,10 +42,9 @@ namespace ServiceStatus.Core
                 return new StatusCheckDetail("Name resolution failed.", timer.ElapsedMilliseconds);
 
             // Try testing TCP
-            if (!await TcpConnectTest(host, port))
-                return new StatusCheckDetail("Tcp connect failed.", timer.ElapsedMilliseconds);
-
-            return new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds);
+            return !await TcpConnectTest(host, port)
+                ? new StatusCheckDetail("Tcp connect failed.", timer.ElapsedMilliseconds)
+                : new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -96,7 +97,7 @@ namespace ServiceStatus.Core
 
             // Let's make sure this isn't just an IP address
             // if it is, we return true
-            if (_ipRegex.IsMatch(hostNameOrAddress))
+            if (s_ipRegex.IsMatch(hostNameOrAddress))
                 return true;
 
             try

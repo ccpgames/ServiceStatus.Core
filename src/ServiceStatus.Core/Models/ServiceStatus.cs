@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+
+using Newtonsoft.Json;
+
 using ServiceStatus.Core.Constants;
-using System.Diagnostics;
 
 namespace ServiceStatus.Core.Models
 {

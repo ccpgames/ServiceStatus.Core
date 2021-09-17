@@ -1,8 +1,7 @@
-﻿using ServiceStatus.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using System.Threading.Tasks;
+
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core.Abstractions
 {

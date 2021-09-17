@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
-using ServiceStatus.Core.Constants;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
+
+using ServiceStatus.Core.Constants;
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core
 {
@@ -40,10 +42,9 @@ namespace ServiceStatus.Core
                 HttpResponseMessage response = await _httpClientFactory.CreateClient().SendAsync(request, new CancellationTokenSource(5000).Token).ConfigureAwait(false);
 
                 // Evaluate that the response is good
-                if (await EvaluateResponse(response).ConfigureAwait(false))
-                    return new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds);
-
-                return new StatusCheckDetail("Content check failed", timer.ElapsedMilliseconds);
+                return await EvaluateResponse(response).ConfigureAwait(false)
+                    ? new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds)
+                    : new StatusCheckDetail("Content check failed", timer.ElapsedMilliseconds);
             }
             catch (Exception e)
             {
@@ -52,10 +53,7 @@ namespace ServiceStatus.Core
                 // Run TCP check to see if the service is responsive
                 StatusCheckDetail tcpCheck = await TcpConnectionCheckAsync(_uri.GetComponents(UriComponents.Host, UriFormat.Unescaped), int.Parse(_uri.GetComponents(UriComponents.StrongPort, UriFormat.Unescaped)), timer).ConfigureAwait(false);
 
-                if (tcpCheck.Value != StatusTypes.OK)
-                    return tcpCheck;
-
-                return new StatusCheckDetail(e.Message, timer.ElapsedMilliseconds);
+                return tcpCheck.Value != StatusTypes.OK ? tcpCheck : new StatusCheckDetail(e.Message, timer.ElapsedMilliseconds);
             }
         }
 

@@ -1,10 +1,12 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Logging;
-using ServiceStatus.Core.Constants;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Logging;
+
+using ServiceStatus.Core.Constants;
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core
 {
@@ -74,10 +76,7 @@ namespace ServiceStatus.Core
                     // Run TCP check to see if the server is responsive
                     StatusCheckDetail tcpCheck = await TcpConnectionCheckAsync(connectionStringBuilder?.DataSource, port, timer).ConfigureAwait(false);
 
-                    if (tcpCheck.Value != StatusTypes.OK)
-                        return tcpCheck;
-
-                    return new StatusCheckDetail(e.Message, timer.ElapsedMilliseconds);
+                    return tcpCheck.Value != StatusTypes.OK ? tcpCheck : new StatusCheckDetail(e.Message, timer.ElapsedMilliseconds);
                 }
             }
             catch (Exception e)
