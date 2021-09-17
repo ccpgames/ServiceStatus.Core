@@ -43,7 +43,7 @@ namespace ServiceStatus.Core.AspNet
             }
 
             // No checks to make
-            if (checksToMake.Count() == 0)
+            if (!checksToMake.Any())
             {
                 context.Response.StatusCode = 404;
             }
@@ -78,7 +78,7 @@ namespace ServiceStatus.Core.AspNet
         /// </summary>
         /// <param name="statusCheck"></param>
         /// <returns></returns>
-        private Task<StatusCheckDetail> DoServiceCheck(IConfigurationStatusCheck statusCheck)
+        private static Task<StatusCheckDetail> DoServiceCheck(IConfigurationStatusCheck statusCheck)
         {
             // Start a new timer
             var timer = Stopwatch.StartNew();

@@ -1,23 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net48;netcoreapp3.1;net5.0</TargetFrameworks>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<PackageTags>Service Status</PackageTags>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Company>CCP hf</Company>
-    <Authors>CCP hf</Authors>
-    <PackageProjectUrl>https://github.com/ccpgames/ServiceStatus.Core</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ccpgames/ServiceStatus.Core</RepositoryUrl>
-    <PackageTags>Service Status</PackageTags>
-    <PackageLicenseUrl>https://github.com/ccpgames/ServiceStatus.Core/blob/master/LICENSE</PackageLicenseUrl>
-    <Copyright>CCP hf</Copyright>
-    <Description>Standardizes and simplifies the addition of a service status endpoint on web sites, or APIs.</Description>
-  </PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="3.0.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="2.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp3.1'">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="3.1.19" />
+	</ItemGroup>
 
+	<ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp3.1'">
+		<PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
+	</ItemGroup>
 </Project>

@@ -68,7 +68,7 @@ namespace ServiceStatus.Core
                     // Check whether the data source has a port associated with it
                     if (connectionStringBuilder.DataSource.Contains(","))
                     {
-                        int.TryParse(connectionStringBuilder?.DataSource?.Split(',')?[1], out port);
+                        port = int.Parse(connectionStringBuilder?.DataSource?.Split(',')?[1]);
                     }
 
                     // Run TCP check to see if the server is responsive

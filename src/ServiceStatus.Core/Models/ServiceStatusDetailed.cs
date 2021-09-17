@@ -60,8 +60,8 @@ namespace ServiceStatus.Core.Models
                     check.Key.Name,
                     check.Value.Value,
                     check.Value.ResponseTime,
-                    (string.IsNullOrEmpty(responsibilityFilter) && requiredFor.Any() ? requiredFor.ToArray() : null),
-                    (string.IsNullOrEmpty(responsibilityFilter) && optionalFor.Any() ? optionalFor.ToArray() : null)));
+                    string.IsNullOrEmpty(responsibilityFilter) && requiredFor.Any() ? requiredFor.ToArray() : null,
+                    string.IsNullOrEmpty(responsibilityFilter) && optionalFor.Any() ? optionalFor.ToArray() : null));
             }
 
             // Gather responsibilities
