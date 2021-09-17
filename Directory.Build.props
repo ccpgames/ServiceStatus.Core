@@ -1,0 +1,19 @@
+<Project>
+	<PropertyGroup>
+		<Company>CCP hf</Company>
+		<Authors>CCP hf</Authors>
+		<PackageProjectUrl>https://github.com/ccpgames/ServiceStatus.Core</PackageProjectUrl>
+		<PackageLicenseUrl>https://github.com/ccpgames/ServiceStatus.Core/blob/master/LICENSE</PackageLicenseUrl>
+		<RepositoryUrl>https://github.com/ccpgames/ServiceStatus.Core</RepositoryUrl>
+		<Copyright>CCP hf</Copyright>
+		<Description>Standardizes and simplifies the addition of a service status endpoint on web sites, or APIs.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="DotNet.ReproducibleBuilds" Version="0.1.66" PrivateAssets="All"/>
+	</ItemGroup>
+
+	<ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+		<PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="All" />
+	</ItemGroup>
+</Project>

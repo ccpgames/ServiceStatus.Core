@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ServiceStatus.Core.Models
+﻿namespace ServiceStatus.Core.Models
 {
     public enum ServiceStatusRequirement
     {

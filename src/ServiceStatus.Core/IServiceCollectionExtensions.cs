@@ -1,7 +1,8 @@
-﻿using ServiceStatus.Core.Abstractions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
+using ServiceStatus.Core.Abstractions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

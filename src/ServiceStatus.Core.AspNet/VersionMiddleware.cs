@@ -1,14 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+﻿using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ServiceStatus.Core.AspNet
 {

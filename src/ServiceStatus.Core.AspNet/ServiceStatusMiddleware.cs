@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
+using Newtonsoft.Json;
+
+using ServiceStatus.Core.Abstractions;
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core.AspNet
 {
@@ -43,7 +46,7 @@ namespace ServiceStatus.Core.AspNet
             }
 
             // No checks to make
-            if (checksToMake.Count() == 0)
+            if (!checksToMake.Any())
             {
                 context.Response.StatusCode = 404;
             }
@@ -78,7 +81,7 @@ namespace ServiceStatus.Core.AspNet
         /// </summary>
         /// <param name="statusCheck"></param>
         /// <returns></returns>
-        private Task<StatusCheckDetail> DoServiceCheck(IConfigurationStatusCheck statusCheck)
+        private static Task<StatusCheckDetail> DoServiceCheck(IConfigurationStatusCheck statusCheck)
         {
             // Start a new timer
             var timer = Stopwatch.StartNew();
@@ -86,15 +89,7 @@ namespace ServiceStatus.Core.AspNet
             // Create a fetch task, which will be the execution of the status check
             Task<StatusCheckDetail> fetchTask = statusCheck.ExecuteStatusCheckAsync();
 
-            return fetchTask.ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    return new StatusCheckDetail($"Exception: {task.Exception.Message}", timer.ElapsedMilliseconds);
-                }
-
-                return task.Result;
-            });
+            return fetchTask.ContinueWith(task => task.IsFaulted ? new StatusCheckDetail($"Exception: {task.Exception.Message}", timer.ElapsedMilliseconds) : task.Result);
         }
 
     }

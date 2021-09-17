@@ -1,5 +1,6 @@
-﻿using ServiceStatus.Core.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core.Abstractions
 {

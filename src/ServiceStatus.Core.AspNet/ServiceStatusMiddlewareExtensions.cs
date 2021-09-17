@@ -7,9 +7,9 @@ namespace Microsoft.AspNetCore.Builder
         public static IApplicationBuilder UseServiceStatus(this IApplicationBuilder builder)
         {
             return builder
-                .Map("/version", app => { app.UseMiddleware<VersionMiddleware>(); })
-                .Map("/servicestatus", app => { app.UseMiddleware<ServiceStatusMiddleware>(); })
-                .Map("/servicestatusdetailed", app => { app.UseMiddleware<ServiceStatusMiddleware>(); });
+                .Map("/version", app => app.UseMiddleware<VersionMiddleware>())
+                .Map("/servicestatus", app => app.UseMiddleware<ServiceStatusMiddleware>())
+                .Map("/servicestatusdetailed", app => app.UseMiddleware<ServiceStatusMiddleware>());
         }
     }
 }

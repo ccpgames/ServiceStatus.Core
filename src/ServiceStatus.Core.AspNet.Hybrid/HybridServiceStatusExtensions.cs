@@ -1,15 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.AspNet;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+using ServiceStatus.Core.Abstractions;
 
 namespace ServiceStatus.Core.AspNet.Hybrid
 {
@@ -51,7 +52,7 @@ namespace ServiceStatus.Core.AspNet.Hybrid
                     {
                         context.Response.StatusCode = report.Status == HealthStatus.Healthy ? StatusCodes.Status200OK : StatusCodes.Status503ServiceUnavailable;
                         context.Response.ContentType = "application/json";
-                        JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+                        var serializerSettings = new JsonSerializerSettings();
                         serializerSettings.Converters.Add(new StringEnumConverter());
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(report, serializerSettings));
                     }

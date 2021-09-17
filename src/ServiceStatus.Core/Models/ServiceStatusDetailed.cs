@@ -1,9 +1,11 @@
-﻿using Newtonsoft.Json;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.Constants;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Newtonsoft.Json;
+
+using ServiceStatus.Core.Abstractions;
+using ServiceStatus.Core.Constants;
 
 namespace ServiceStatus.Core.Models
 {
@@ -29,7 +31,7 @@ namespace ServiceStatus.Core.Models
         /// <param name="checks">List of responsibilities</param>
         public ServiceStatusDetailed(Dictionary<IConfigurationStatusCheck, StatusCheckDetail> checks)
         {
-            foreach (var check in checks)
+            foreach (KeyValuePair<IConfigurationStatusCheck, StatusCheckDetail> check in checks)
             {
                 Details.Add(new ServiceStatusDetailedEntry(
                     check.Key.Name,
@@ -49,7 +51,7 @@ namespace ServiceStatus.Core.Models
             if (!string.IsNullOrEmpty(responsibilityFilter))
                 Responsibilities = new Dictionary<string, string>();
 
-            foreach (var check in checks)
+            foreach (KeyValuePair<IServiceStatusCheck, StatusCheckDetail> check in checks)
             {
                 // Retrieve lists of keys for required and optional responsiblities
                 IEnumerable<string> requiredFor = check.Key.Responsibilities.Where(x => x.Value == ServiceStatusRequirement.Required).Select(x => x.Key);
@@ -60,8 +62,8 @@ namespace ServiceStatus.Core.Models
                     check.Key.Name,
                     check.Value.Value,
                     check.Value.ResponseTime,
-                    (string.IsNullOrEmpty(responsibilityFilter) && requiredFor.Any() ? requiredFor.ToArray() : null),
-                    (string.IsNullOrEmpty(responsibilityFilter) && optionalFor.Any() ? optionalFor.ToArray() : null)));
+                    string.IsNullOrEmpty(responsibilityFilter) && requiredFor.Any() ? requiredFor.ToArray() : null,
+                    string.IsNullOrEmpty(responsibilityFilter) && optionalFor.Any() ? optionalFor.ToArray() : null));
             }
 
             // Gather responsibilities
@@ -102,14 +104,9 @@ namespace ServiceStatus.Core.Models
         /// <param name="requiredResponsibilities">A list of responsibilities that will result in final status of ERROR if any are not returning OK</param>
         public void ValidateStatus(string[] requiredResponsibilities)
         {
-            if (requiredResponsibilities != null)
-            {
-                Status = Responsibilities.Any(x => requiredResponsibilities.Any(y => x.Key == y) && x.Value != StatusTypes.OK) ? StatusTypes.Error : Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK;
-            }
-            else
-            {
-                Status = Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK;
-            }
+            Status = requiredResponsibilities != null
+                ? Responsibilities.Any(x => requiredResponsibilities.Any(y => x.Key == y) && x.Value != StatusTypes.OK) ? StatusTypes.Error : Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK
+                : Details.Any(x => x.Value != StatusTypes.OK) ? StatusTypes.Degraded : StatusTypes.OK;
         }
 
         /// <summary>

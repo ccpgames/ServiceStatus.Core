@@ -1,12 +1,15 @@
-﻿using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using ServiceStatus.Core.Constants;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
+
+using Newtonsoft.Json;
+
+using ServiceStatus.Core.Constants;
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core
 {

@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using System.Diagnostics;
+
+using Newtonsoft.Json;
 
 namespace ServiceStatus.Core.Models
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ServiceStatusDetailedEntry
     {
         /// <summary>

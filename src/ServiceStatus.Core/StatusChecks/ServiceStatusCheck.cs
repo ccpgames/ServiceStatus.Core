@@ -1,14 +1,17 @@
-﻿using Microsoft.Extensions.Logging;
-using ServiceStatus.Core.Abstractions;
-using ServiceStatus.Core.Constants;
-using ServiceStatus.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+
+using Microsoft.Extensions.Logging;
+
+using ServiceStatus.Core.Abstractions;
+using ServiceStatus.Core.Constants;
+using ServiceStatus.Core.Models;
 
 namespace ServiceStatus.Core
 {
@@ -17,7 +20,7 @@ namespace ServiceStatus.Core
     /// </summary>
     public abstract class ServiceStatusCheck : IServiceStatusCheck
     {
-        private static Regex _ipRegex = new Regex("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", RegexOptions.Compiled);
+        private static readonly Regex s_ipRegex = new Regex("[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+", RegexOptions.Compiled);
         protected readonly ILogger _logger;
 
         public abstract Dictionary<string, ServiceStatusRequirement> Responsibilities { get; }
@@ -39,10 +42,9 @@ namespace ServiceStatus.Core
                 return new StatusCheckDetail("Name resolution failed.", timer.ElapsedMilliseconds);
 
             // Try testing TCP
-            if (!TcpConnectTest(host, port))
-                return new StatusCheckDetail("Tcp connect failed.", timer.ElapsedMilliseconds);
-
-            return new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds);
+            return !await TcpConnectTest(host, port)
+                ? new StatusCheckDetail("Tcp connect failed.", timer.ElapsedMilliseconds)
+                : new StatusCheckDetail(StatusTypes.OK, timer.ElapsedMilliseconds);
         }
 
         /// <summary>
@@ -51,13 +53,29 @@ namespace ServiceStatus.Core
         /// <param name="host"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        private bool TcpConnectTest(string host, int port)
+        private async ValueTask<bool> TcpConnectTest(string host, int port)
         {
             try
             {
                 using (var client = new TcpClient())
                 {
-                    return client.ConnectAsync(host, port).Wait(5000);
+#if NET5_0_OR_GREATER
+                    using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
+                    {
+                        try
+                        {
+                            await client.ConnectAsync(host, port, cancellationToken.Token).ConfigureAwait(false);
+                            return true;
+                        }
+                        catch (SocketException) when (cancellationToken.IsCancellationRequested)
+                        {
+                            return false;
+                        }
+                    }
+#else
+                    var delayTask = Task.Delay(5000);
+                    return await Task.WhenAny(client.ConnectAsync(host, port)) != delayTask;
+#endif
                 }
             }
             catch (AggregateException a) when (a.InnerException is SocketException s)
@@ -79,7 +97,7 @@ namespace ServiceStatus.Core
 
             // Let's make sure this isn't just an IP address
             // if it is, we return true
-            if (_ipRegex.IsMatch(hostNameOrAddress))
+            if (s_ipRegex.IsMatch(hostNameOrAddress))
                 return true;
 
             try
