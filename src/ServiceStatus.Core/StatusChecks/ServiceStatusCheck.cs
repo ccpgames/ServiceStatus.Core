@@ -59,23 +59,8 @@ namespace ServiceStatus.Core
             {
                 using (var client = new TcpClient())
                 {
-#if NET5_0_OR_GREATER
-                    using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
-                    {
-                        try
-                        {
-                            await client.ConnectAsync(host, port, cancellationToken.Token).ConfigureAwait(false);
-                            return true;
-                        }
-                        catch (SocketException) when (cancellationToken.IsCancellationRequested)
-                        {
-                            return false;
-                        }
-                    }
-#else
                     var delayTask = Task.Delay(5000);
                     return await Task.WhenAny(client.ConnectAsync(host, port)) != delayTask;
-#endif
                 }
             }
             catch (AggregateException a) when (a.InnerException is SocketException s)
