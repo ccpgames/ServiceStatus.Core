@@ -55,19 +55,46 @@ namespace ServiceStatus.Core
         /// <returns></returns>
         private async ValueTask<bool> TcpConnectTest(string host, int port)
         {
+            CancellationToken token = default;
             try
             {
                 using (var client = new TcpClient())
                 {
-                    var delayTask = Task.Delay(5000);
-                    return await Task.WhenAny(client.ConnectAsync(host, port)) != delayTask;
+                    using (var cancellationToken = new CancellationTokenSource(TimeSpan.FromSeconds(5)))
+                    {
+                        token = cancellationToken.Token;
+#if NET5_0_OR_GREATER
+                        await client.ConnectAsync(host, port, token).ConfigureAwait(false);
+                        return true;
+#else
+                        using (token.Register(() => client.Close()))
+                        {
+                            await client.ConnectAsync(host, port).ConfigureAwait(false);
+                            return true;
+                        }
+#endif
+                    }
                 }
             }
-            catch (AggregateException a) when (a.InnerException is SocketException s)
+#if NET5_0_OR_GREATER
+            catch (OperationCanceledException e) when (token.IsCancellationRequested)
             {
-                _logger?.LogWarning(s, $"Unable to connect via TCP to {host}:{port}. Reason: {s.SocketErrorCode}.");
+                _logger?.LogWarning(e, $"Unable to connect via TCP to {host}:{port}.");
                 return false;
             }
+#elif NETCOREAPP3_1 || NETSTANDARD2_1
+            catch (ObjectDisposedException e) when (token.IsCancellationRequested)
+            {
+                _logger?.LogWarning(e, $"Unable to connect via TCP to {host}:{port}.");
+                return false;
+            }
+#elif NETFRAMEWORK && NET48_OR_GREATER
+            catch (NullReferenceException e) when (token.IsCancellationRequested)
+            {
+                _logger?.LogWarning(e, $"Unable to connect via TCP to {host}:{port}.");
+                return false;
+            }
+#endif
         }
 
         /// <summary>
