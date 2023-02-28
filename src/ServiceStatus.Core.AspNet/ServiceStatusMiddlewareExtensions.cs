@@ -9,7 +9,8 @@ namespace Microsoft.AspNetCore.Builder
             return builder
                 .Map("/version", app => app.UseMiddleware<VersionMiddleware>())
                 .Map("/servicestatus", app => app.UseMiddleware<ServiceStatusMiddleware>())
-                .Map("/servicestatusdetailed", app => app.UseMiddleware<ServiceStatusMiddleware>());
+                .Map("/servicestatusdetailed", app => app.UseMiddleware<ServiceStatusMiddleware>())
+                .Map("/healthcheck", app => app.UseMiddleware<HealthCheckMiddleware>());
         }
     }
 }
